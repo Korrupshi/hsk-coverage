@@ -23,7 +23,7 @@ object Dictionary {
         var dictionary: List<DictEntry> = emptyList()
 //        val fileName = "data/dictionary.json"
 //        val fileName = "..\\resources\\data\\dictionary.json"
-        val fileName = "C:\\Users\\Stefa\\Desktop\\Main\\Coding\\02_Projects\\hsk-coverage\\src\\main\\resources\\data\\dictionary.json"
+        val fileName = "C:\\Users\\Stefa\\Desktop\\Main\\Coding\\02_Projects\\hsk-coverage\\src\\main\\resources\\assets\\dictionary.json"
         try {
             val inputStream: InputStream = File(fileName).inputStream()
             val bufferedReader =

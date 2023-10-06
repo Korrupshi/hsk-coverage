@@ -65,3 +65,4 @@ interface Shu69API {
     @GET("novels/class/{categoryId}.htm")
     suspend fun fetchCategoryHtml(@Path("categoryId") categoryId: String): Response<ResponseBody>
 }
+

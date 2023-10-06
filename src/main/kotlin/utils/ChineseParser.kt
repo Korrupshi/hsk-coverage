@@ -1,7 +1,7 @@
 import com.hankcs.hanlp.HanLP
 import com.hankcs.hanlp.tokenizer.SpeedTokenizer
+import dictionary.HskDictionaryOld
 import utils.Dictionary
-import utils.HskDictionary
 
 private const val TAG = "ChineseParser"
 
@@ -16,7 +16,7 @@ object ChineseParser {
             "hsk6" to 0,
         )
         for (word in words) {
-            val hsk = HskDictionary.search(word)
+            val hsk = HskDictionaryOld.search(word)
             hsk?.hsk?.also {
                 if (hskCounts.keys.contains(it)) {
                     hskCounts[hsk.hsk] = (hskCounts[hsk.hsk] ?: 0) + 1
@@ -53,7 +53,7 @@ object ChineseParser {
             val terms = SpeedTokenizer.segment(line)
             for (term in terms) {
                 var currentWord: String = term.word
-                if (!HskDictionary.contains(currentWord)) {
+                if (!HskDictionaryOld.contains(currentWord)) {
                     while (currentWord.isNotEmpty() &&
                         !Dictionary.contains(currentWord)
                     ) {
@@ -74,7 +74,7 @@ object ChineseParser {
 
         for (term in terms) {
             var currentWord: String = term.word
-            if (!HskDictionary.contains(currentWord)) {
+            if (!HskDictionaryOld.contains(currentWord)) {
                 while (currentWord.isNotEmpty() &&
                     !Dictionary.contains(currentWord)
                 ) {
@@ -102,7 +102,7 @@ object ChineseParser {
         val terms = HanLP.segment(lines.joinToString("\n"))
         for (term in terms) {
             val currentWord: String = term.word
-            val hsk = HskDictionary.search(currentWord)
+            val hsk = HskDictionaryOld.search(currentWord)
             hsk?.hsk?.also {
                 if (hskCounts.keys.contains(it) && !words.contains(currentWord)) {
                     words.add(currentWord)

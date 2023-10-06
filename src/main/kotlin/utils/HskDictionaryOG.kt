@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken
 import data.model.HskWord
 import java.io.*
 
-object HskDictionary {
+object HskDictionaryOG {
     private const val HSK6_WORD_COUNT = 5324
     private const val HSK7_WORD_COUNT = 10943
     private var maxHsk6: Boolean = true

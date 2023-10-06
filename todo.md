@@ -3,8 +3,8 @@
 ## Features
 [x] Which genres are best for learning HSK words
 [x] Which genres are complementary to maximise HSK coverage
-[ ] Get HSK coverage I get when completing an entire webnovel
-[ ] Based on my current known HSK words, which genre/book should I read
+[x] Get HSK coverage I get when completing an entire webnovel
+[x] Based on my current known HSK words, which genre/book should I read
 [ ] Get HSK coverage of YT playlists
 
 

@@ -1,16 +1,32 @@
+package analysis
+
+import ChineseParser
+import repository.KnownRepository
+import MyResult
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import data.model.TextHskWords
 import data.model.TextSource
+import domain.contracts.HskDictionary
 import kotlinx.coroutines.*
 import remote.Shu69Category
 import remote.Shu69Service
+import utils.Dictionary
 import utils.FileUtils
-import utils.HskDictionary
+//import utils.HskDictionary
 import java.io.*
 
 
-object Analysis {
+class Analysis(
+    private val hskDictionary: HskDictionary
+) {
+
+    init {
+        hskDictionary.init()
+        KnownRepository.init()
+        Dictionary.init()
+    }
+//    val hskDictionary : HskDictionary = HskDictionaryOld()
 //    private var WORD_LIMIT = 150_000
 //    private var CHAPTER_LIMIT = 100
 //    private var BOOK_LIMIT = 100
@@ -20,41 +36,40 @@ object Analysis {
 //        this.WORD_LIMIT = limit
 //    }
 
-    // Builder class for Analysis
+    // Builder class for analysis.Analysis
     fun getUnknownHskCoverage(data: TextHskWords): Pair<Int, Int> {
         val knownWords: Set<String> = KnownRepository.getKnownWords()
-        val knownHsk = HskDictionary.filterHsk(knownWords)
+        val knownHsk = hskDictionary.filterHsk(knownWords)
         val totalHsk = knownHsk.plus(data.hskWords)
         val currentCoverage = calculateHskCoverage(knownHsk.size)
         val totalCoverage = calculateHskCoverage(totalHsk.size)
-//        println("${data.id}: ${totalCoverage}% (+${totalCoverage - currentCoverage}%)")
         return totalCoverage to (totalCoverage - currentCoverage)
     }
 
     fun filterUnknownHsk(data: List<TextHskWords>) {
         val knownWords: Set<String> = KnownRepository.getKnownWords()
-        val unknownHsk = HskDictionary.filterUnknownHsk(knownWords)
-        val knownHsk = HskDictionary.filterHsk(knownWords)
-        val current = (knownHsk.size * 100) / HskDictionary.hskCount
+        val unknownHsk = hskDictionary.filterUnknownHsk(knownWords)
+        val knownHsk = hskDictionary.filterHsk(knownWords)
+        val current = (knownHsk.size * 100) / hskDictionary.size
 
         println("Current coverage: $current% ${knownHsk.size} words")
         for (item in data) {
             val words: Set<String> = item.hskWords.subtract(knownWords)
-            val coverage = (words.size * 100) / HskDictionary.hskCount
+            val coverage = (words.size * 100) / hskDictionary.size
             println("${item.id}: $coverage% can be added")
         }
     }
 //    fun genreUnknownHsk(data: List<TextHskWords>) {
-//        val knownWords: Set<String> = KnownRepository.getKnownWords()
-//        val unknownHsk = HskDictionary.filterUnknownHsk(knownWords)
+//        val knownWords: Set<String> = repository.KnownRepository.getKnownWords()
+//        val unknownHsk = domain.contracts.hskDictionary.filterUnknownHsk(knownWords)
 //        println(unknownHsk.size)
-//        val knownHsk = HskDictionary.filterHsk(knownWords)
-//        val current = (knownHsk.size * 100) / HskDictionary.hskCount
+//        val knownHsk = domain.contracts.hskDictionary.filterHsk(knownWords)
+//        val current = (knownHsk.size * 100) / domain.contracts.hskDictionary.size
 //
 //        println("Current coverage: $current% ${knownHsk.size} words")
 //        for (item in data) {
 //            val words: Set<String> = item.hskWords.subtract(knownWords)
-//            val coverage = (words.size * 100) / HskDictionary.hskCount
+//            val coverage = (words.size * 100) / domain.contracts.hskDictionary.size
 //            println("${item.id}: $coverage% can be added")
 //        }
 //    }
@@ -65,12 +80,12 @@ object Analysis {
             hskWords.addAll(item.hskWords)
         }
 
-        val coverage = (hskWords.size * 100) / HskDictionary.hskCount
+        val coverage = (hskWords.size * 100) / hskDictionary.size
         println("Full genre: $coverage%")
     }
 
     fun calculateHskCoverage(hskWordCount: Int): Int {
-        return (hskWordCount * 100) / HskDictionary.hskCount
+        return (hskWordCount * 100) / hskDictionary.size
     }
 
     fun categoryPairwiseCoverage(data: List<TextHskWords>): Pair<TextHskWords, TextHskWords>? {
@@ -82,7 +97,7 @@ object Analysis {
                 val combination = data[i] to data[j]
                 val uniqueWords = (data[i].hskWords + data[j].hskWords).size
                 val coverage =
-                    (uniqueWords * 100) / HskDictionary.hskCount
+                    (uniqueWords * 100) / hskDictionary.size
 
                 if (uniqueWords > maxUniqueWords) {
 //                    println("${data[i].id} + ${data[j].id}: ${coverage}% ")
@@ -136,7 +151,7 @@ object Analysis {
         for (textHskWords in allWords) {
             // Get HSKCoverage%
             val hskCounts = textHskWords.hskWords.size
-            val coverage = (hskCounts * 100) / HskDictionary.hskCount
+            val coverage = (hskCounts * 100) / hskDictionary.size
             println("${textHskWords.id}: $coverage%")
             coverages.add(textHskWords.id to coverage)
         }
@@ -192,7 +207,7 @@ object Analysis {
                 else allWords.subList(0, wordLimit)
             val hskWords = mutableSetOf<String>()
             for (word in maxWords.toSet()) {
-                if (HskDictionary.contains(word)) {
+                if (hskDictionary.contains(word)) {
                     hskWords.add(word)
                 }
             }
@@ -232,8 +247,8 @@ object Analysis {
             val allWordsSet = allWordsList.flatten<String>().toSet<String>()
             val hskWords = mutableSetOf<String>()
             for (word in allWordsSet) {
-                if (HskDictionary.contains(word)) {
-//                if (HskDictionary.containsHsk6(word)) {
+                if (hskDictionary.contains(word)) {
+//                if (domain.contracts.HskDictionary.containsHsk6(word)) {
                     hskWords.add(word)
                 }
             }
