@@ -81,8 +81,7 @@ object HskDictionaryOG {
 
     private fun loadHskDictionary(): Map<String, HskWord> {
         var dictionary: List<HskWord> = emptyList()
-        val fileName =
-            "C:\\Users\\Stefa\\Desktop\\Main\\Coding\\02_Projects\\hsk-coverage\\src\\main\\resources\\assets\\hskCache.json"
+        val fileName = "src\\main\\resources\\assets\\hskCache.json"
 
         try {
             val inputStream: InputStream = File(fileName).inputStream()

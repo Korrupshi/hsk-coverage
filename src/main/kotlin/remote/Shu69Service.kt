@@ -12,7 +12,6 @@ object Shu69Service {
     private fun extractBookId(url: String?): String? {
         if (url == null) return null
         val pattern = Regex("/(\\d+)/(\\d+)$")
-//        val pattern = Regex("/(\\d{5})/\\d+$")
         val matchMyResult = pattern.find(url)
         return matchMyResult?.groupValues?.get(1)
     }

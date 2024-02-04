@@ -7,7 +7,6 @@ interface HskDictionary {
     fun init()
     fun filterHsk(data: Collection<String>): Set<String>
     fun filterUnknownHsk(knownWords: Collection<String>): Set<String>
-//    fun getTotalHskCount(): Int
     fun search(word: String): HskWord?
     fun contains(word: String): Boolean
     fun getHskLevel(word: String): String?

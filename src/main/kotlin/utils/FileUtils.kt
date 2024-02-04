@@ -11,8 +11,7 @@ object FileUtils {
 
     fun loadFileAsText(fileName: String): String {
         val stringBuilder = StringBuilder()
-        val filePath =
-            "C:\\Users\\Stefa\\Desktop\\Main\\Coding\\02_Projects\\hsk-coverage\\src\\main\\resources\\assets\\$fileName"
+        val filePath = "src\\main\\resources\\assets\\$fileName"
 
         try {
             val inputStream: InputStream = File(filePath).inputStream()
@@ -36,8 +35,7 @@ object FileUtils {
         try {
             // Convert data to JSON and write it to a JSON file
             val json = gson.toJson(data)
-            val filePath =
-                "C:\\Users\\Stefa\\Desktop\\Main\\Coding\\02_Projects\\hsk-coverage\\src\\main\\resources\\assets\\$fileName.json.bin"
+            val filePath = "src\\main\\resources\\assets\\$fileName.json.bin"
 
             val outputStream = FileOutputStream(filePath)
             val bufferedOutputStream = BufferedOutputStream(outputStream)
@@ -45,7 +43,6 @@ object FileUtils {
 
             gzipOutputStream.write(json.toByteArray(Charsets.UTF_8))
             gzipOutputStream.close()
-//            File(filePath).writeText(json)
             println("Data has been written.")
         } catch (e: Exception) {
             println("An error occurred: ${e.message}")
@@ -53,7 +50,6 @@ object FileUtils {
     }
 
     fun exportTextHskWords(fileName: String, data: List<TextHskWords>) {
-//        val gson = Gson()
         val gson: Gson = GsonBuilder().setPrettyPrinting().create()
 
         try {

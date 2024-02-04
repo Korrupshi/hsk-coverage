@@ -15,9 +15,7 @@ class HskExperiment private constructor(
     private val wordLimit: Int,
     private val chapterLimit: Int,
     private val bookLimit: Int,
-//    private val categoryBookLimit: Int,
     private val export: Boolean,
-//    private val useNewHsk: Boolean,
     private val analysis: Analysis
 ) {
     // Builder class for analysis.Analysis
@@ -25,7 +23,6 @@ class HskExperiment private constructor(
         private var wordLimit = 150_000
         private var chapterLimit = 100
         private var bookLimit = 100
-//        private var categoryBookLimit = 10
         private var export = false
         private var useNewHsk = false
         private var hskDictionary : HskDictionary = HskDictionaryOld
@@ -56,10 +53,6 @@ class HskExperiment private constructor(
             return this
         }
 
-//        fun setCategoryBookLimit(limit: Int): Builder {
-//            categoryBookLimit = limit
-//            return this
-//        }
 
         // Build the analysis.Analysis object with the configured values
         fun build(): HskExperiment {
@@ -67,9 +60,7 @@ class HskExperiment private constructor(
                 wordLimit,
                 chapterLimit,
                 bookLimit,
-//                categoryBookLimit,
                 export,
-//                useNewHsk,
                 Analysis(hskDictionary)
             )
         }
@@ -85,7 +76,6 @@ class HskExperiment private constructor(
         val coverages: MutableList<CategoryBookCoverageResults> =
             mutableListOf()
         for (category in categories) {
-//        for (category in Shu69Category.entries) {
             val bookIds = analysis.fetchBookIdsPerCategory(
                 category,
                 limit = bookLimit
@@ -170,88 +160,3 @@ class HskExperiment private constructor(
         return sortedResults
     }
 }
-//object HskExperiment {
-//
-//    private const val CATEGORY_BOOK_LIMIT = 10
-//    private const val BOOK_LIMIT = 100
-//
-//    data class categoryBookCoverageResults(
-//        val category: String,
-//        val bookId: String,
-//        val coverage: Int,
-//        val additionalCoverage: Int,
-//    )
-//
-//    suspend fun analyseTotalHskCoverageForCategoryBooks() {
-//        /**
-//         * Per category give me 5 bookIds, get the total coverage for these
-//         * books. Total coverage meaning my already known Hsk words, including
-//         * any new hsk words the book gives me.
-//         */
-//        var result = "category\tbookId\tcoverage\tadditional_coverage\n"
-//        val coverages: MutableList<categoryBookCoverageResults> =
-//            mutableListOf()
-//        for (category in Shu69Category.entries) {
-//            val bookIds = analysis.analysis.fetchBookIdsPerCategory(
-//                category,
-//                limit = CATEGORY_BOOK_LIMIT
-//            )
-//            for (bookId in bookIds) {
-//                val textHskWords = analysis.analysis.fetchFullNovelHskWords(bookId)
-//                val (coverage, addedCoverage) = analysis.analysis.getUnknownHskCoverage(
-//                    textHskWords
-//                )
-//                coverages.add(
-//                    categoryBookCoverageResults(
-//                        category.name,
-//                        bookId,
-//                        coverage,
-//                        addedCoverage
-//                    )
-//                )
-//            }
-//        }
-//        val sortedResults = coverages.sortedByDescending { it.coverage }
-//        for ((category, bookId, coverage, addedCoverage) in sortedResults) {
-//            result += "$category\t$bookId\t$coverage\t$addedCoverage\n"
-//        }
-////        FileUtils.writeTxtFile("results/bookTotalCoverage.txt", result)
-//    }
-//
-//
-//    suspend fun analyseTotalHskCoverageForCategory(category: Shu69Category) {
-//        /**
-//         * Per category give me 5 bookIds, get the total coverage for these
-//         * books. Total coverage meaning my already known Hsk words, including
-//         * any new hsk words the book gives me.
-//         */
-//        var result = "category\tbookId\tcoverage\tadditional_coverage\n"
-//        val coverages: MutableList<categoryBookCoverageResults> =
-//            mutableListOf()
-//        val bookIds = analysis.analysis.fetchBookIdsPerCategory(
-//            category,
-//            limit = BOOK_LIMIT
-//        )
-//        for (bookId in bookIds) {
-//            val textHskWords = analysis.analysis.fetchFullNovelHskWords(bookId)
-//            val (coverage, addedCoverage) = analysis.analysis.getUnknownHskCoverage(
-//                textHskWords
-//            )
-//            coverages.add(
-//                categoryBookCoverageResults(
-//                    category.name,
-//                    bookId,
-//                    coverage,
-//                    addedCoverage
-//                )
-//            )
-//        }
-//        val sortedResults = coverages.sortedByDescending { it.coverage }
-//        for ((cat, bookId, coverage, addedCoverage) in sortedResults) {
-//            result += "$category\t$bookId\t$coverage\t$addedCoverage\n"
-//        }
-//        FileUtils.writeTxtFile("results/${category.name.lowercase()}TotalCoverage2.txt", result)
-//    }
-//}
-//
-//

@@ -12,7 +12,6 @@ import retrofit2.Response
 
 object HskService {
 
-
     suspend fun fetchHskWordsOld(hskLevel: Int): List<String> = withContext(
         Dispatchers.IO) {
         val url = "https://hewgill.com/hsk/hsk$hskLevel.html"

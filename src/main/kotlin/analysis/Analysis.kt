@@ -26,15 +26,6 @@ class Analysis(
         KnownRepository.init()
         Dictionary.init()
     }
-//    val hskDictionary : HskDictionary = HskDictionaryOld()
-//    private var WORD_LIMIT = 150_000
-//    private var CHAPTER_LIMIT = 100
-//    private var BOOK_LIMIT = 100
-//    private var CATEGORY_BOOK_LIMIT = 10
-
-//    fun setWordLimit(limit : Int){
-//        this.WORD_LIMIT = limit
-//    }
 
     // Builder class for analysis.Analysis
     fun getUnknownHskCoverage(data: TextHskWords): Pair<Int, Int> {
@@ -59,20 +50,6 @@ class Analysis(
             println("${item.id}: $coverage% can be added")
         }
     }
-//    fun genreUnknownHsk(data: List<TextHskWords>) {
-//        val knownWords: Set<String> = repository.KnownRepository.getKnownWords()
-//        val unknownHsk = domain.contracts.hskDictionary.filterUnknownHsk(knownWords)
-//        println(unknownHsk.size)
-//        val knownHsk = domain.contracts.hskDictionary.filterHsk(knownWords)
-//        val current = (knownHsk.size * 100) / domain.contracts.hskDictionary.size
-//
-//        println("Current coverage: $current% ${knownHsk.size} words")
-//        for (item in data) {
-//            val words: Set<String> = item.hskWords.subtract(knownWords)
-//            val coverage = (words.size * 100) / domain.contracts.hskDictionary.size
-//            println("${item.id}: $coverage% can be added")
-//        }
-//    }
 
     fun maxCategoryCoverage(data: List<TextHskWords>) {
         val hskWords = mutableSetOf<String>()
@@ -122,8 +99,7 @@ class Analysis(
 
     fun importCategoryWords(): List<TextHskWords> {
         var data: List<TextHskWords> = emptyList()
-        val fileName =
-            "C:\\Users\\Stefa\\Desktop\\Main\\Coding\\02_Projects\\hsk-coverage\\results\\categoryWords.json"
+        val fileName = "results\\categoryWords.json"
         try {
             val inputStream: InputStream = File(fileName).inputStream()
             val bufferedReader =
