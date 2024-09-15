@@ -1,0 +1,2 @@
+category	bookId	coverage	additional_coverage	word_limit
+SCI_FI	51936	74	5	100000
